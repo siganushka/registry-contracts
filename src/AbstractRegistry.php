@@ -38,7 +38,7 @@ abstract class AbstractRegistry implements RegistryInterface
         $this->abstraction = $abstraction;
     }
 
-    public function register(object $service): self
+    public function register(object $service): RegistryInterface
     {
         $serviceId = $this->getServiceId($service);
         if (!$service instanceof $this->abstraction) {
