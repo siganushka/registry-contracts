@@ -12,7 +12,7 @@ env:
     - PREFER_LOWEST=""
 
 before_script:
-    - composer install $PREFER_LOWEST
+    - composer update $PREFER_LOWEST
 
 script:
     - php vendor/bin/simple-phpunit --debug
