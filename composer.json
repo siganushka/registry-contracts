@@ -1,0 +1,32 @@
+{
+    "name": "siganushka/registry-contracts",
+    "description": "A set of abstractions for registry pattern.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "siganushka",
+            "email": "siganushka@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.5"
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^5.3",
+        "friendsofphp/php-cs-fixer": "^3.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Siganushka\\Contracts\\Registry\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Siganushka\\Contracts\\Registry\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
