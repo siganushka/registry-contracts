@@ -109,3 +109,8 @@ $registry->getValues(); // return array of instanceof ChannelInterface
 $registry->getKeys();   // return ['foo', 'bar']
 ```
 
+### Tests
+
+```bash
+$ php vendor/bin/simple-phpunit --debug 
+```
