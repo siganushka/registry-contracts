@@ -19,7 +19,7 @@ use Siganushka\Contracts\Registry\RegistryInterface;
  */
 final class RegistryTest extends TestCase
 {
-    public function testAll(): void
+    public function testRegister(): void
     {
         $foo = $this->getMockForAbstractClass(RegistrySubjectInterface::class, [], 'FooService');
         $bar = $this->getMockForAbstractClass(RegistrySubjectInterface::class, [], 'BarService');
@@ -69,7 +69,7 @@ final class RegistryTest extends TestCase
         $this->getMockForAbstractClass(AbstractRegistry::class, ['NotFoundInterface'], 'ServiceRegistry');
     }
 
-    public function testRegisterServiceUnsupportedException(): void
+    public function testServiceUnsupportedException(): void
     {
         $this->expectException(ServiceUnsupportedException::class);
         $this->expectExceptionMessage('Service stdClass for registry ServiceRegistry is unsupported.');
@@ -78,7 +78,7 @@ final class RegistryTest extends TestCase
         $registry->register(new \stdClass());
     }
 
-    public function testRegisterServiceExistingException(): void
+    public function testServiceExistingException(): void
     {
         $this->expectException(ServiceExistingException::class);
         $this->expectExceptionMessage('Service FooService for registry ServiceRegistry already exists.');
@@ -90,7 +90,7 @@ final class RegistryTest extends TestCase
         $registry->register($foo);
     }
 
-    public function testRegisterNonExistingException(): void
+    public function testServiceNonExistingException(): void
     {
         $this->expectException(ServiceNonExistingException::class);
         $this->expectExceptionMessage('Service NotFoundService for registry ServiceRegistry does not exist.');

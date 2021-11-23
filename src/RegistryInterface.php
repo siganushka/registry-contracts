@@ -16,7 +16,7 @@ interface RegistryInterface
      * @throws ServiceUnsupportedException
      * @throws ServiceExistingException
      */
-    public function register(object $service): RegistryInterface;
+    public function register(object $service): self;
 
     /**
      * Check service if exists.
