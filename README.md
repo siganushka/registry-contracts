@@ -112,5 +112,5 @@ $registry->getKeys();   // return ['foo', 'bar']
 ### Tests
 
 ```bash
-$ php vendor/bin/simple-phpunit --debug 
+$ php vendor/bin/simple-phpunit --debug
 ```
