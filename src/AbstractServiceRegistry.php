@@ -9,7 +9,7 @@ use Siganushka\Contracts\Registry\Exception\ServiceExistingException;
 use Siganushka\Contracts\Registry\Exception\ServiceNonExistingException;
 use Siganushka\Contracts\Registry\Exception\ServiceUnsupportedException;
 
-abstract class AbstractRegistry implements RegistryInterface
+abstract class AbstractServiceRegistry implements ServiceRegistryInterface
 {
     /**
      * Services for registry.
@@ -17,6 +17,7 @@ abstract class AbstractRegistry implements RegistryInterface
      * @var array
      */
     protected $services = [];
+
     /**
      * Abstraction that services need to implement.
      *
@@ -38,9 +39,8 @@ abstract class AbstractRegistry implements RegistryInterface
         $this->abstraction = $abstraction;
     }
 
-    public function register(object $service): RegistryInterface
+    public function register(string $serviceId, object $service): ServiceRegistryInterface
     {
-        $serviceId = $this->getServiceId($service);
         if (!$service instanceof $this->abstraction) {
             throw new ServiceUnsupportedException($this, $serviceId);
         }
@@ -54,9 +54,18 @@ abstract class AbstractRegistry implements RegistryInterface
         return $this;
     }
 
+    public function unregister(string $serviceId): void
+    {
+        if (!$this->has($serviceId)) {
+            throw new ServiceNonExistingException($this, $serviceId);
+        }
+
+        unset($this->services[$serviceId]);
+    }
+
     public function has(string $serviceId): bool
     {
-        return isset($this->services[$serviceId]);
+        return \array_key_exists($serviceId, $this->services);
     }
 
     public function get(string $serviceId): object
@@ -68,36 +77,13 @@ abstract class AbstractRegistry implements RegistryInterface
         return $this->services[$serviceId];
     }
 
-    public function remove(string $serviceId): void
-    {
-        if (!$this->has($serviceId)) {
-            throw new ServiceNonExistingException($this, $serviceId);
-        }
-
-        unset($this->services[$serviceId]);
-    }
-
     public function clear(): void
     {
         $this->services = [];
     }
 
-    public function getKeys(): array
+    public function getServiceIds(): array
     {
         return array_keys($this->services);
-    }
-
-    public function getValues(): array
-    {
-        return $this->services;
-    }
-
-    protected function getServiceId($service)
-    {
-        if ($service instanceof AliasableInterface) {
-            return $service->getAlias();
-        }
-
-        return \get_class($service);
     }
 }

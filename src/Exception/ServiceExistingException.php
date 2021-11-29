@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Siganushka\Contracts\Registry\Exception;
 
-use Siganushka\Contracts\Registry\RegistryInterface;
+use Siganushka\Contracts\Registry\ServiceRegistryInterface;
 
-class ServiceExistingException extends RegistryException
+class ServiceExistingException extends ServiceRegistryException
 {
-    public function __construct(RegistryInterface $registry, string $serviceId)
+    public function __construct(ServiceRegistryInterface $registry, string $serviceId)
     {
         parent::__construct($registry, sprintf('Service %s for registry %s already exists.', $serviceId, \get_class($registry)));
     }
