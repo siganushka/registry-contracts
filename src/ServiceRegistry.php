@@ -30,13 +30,22 @@ class ServiceRegistry implements ServiceRegistryInterface
      *
      * @throws AbstractionNotFoundException
      */
-    public function __construct(string $abstraction)
+    public function __construct(string $abstraction, iterable $serviceIterator = [])
     {
         if (!interface_exists($abstraction)) {
             throw new AbstractionNotFoundException($this, $abstraction);
         }
 
         $this->abstraction = $abstraction;
+
+        // register for tagged iterator
+        foreach ($serviceIterator as $serviceId => $service) {
+            if ($service instanceof AliasableInterface) {
+                $this->registerForAliasable($service);
+            } else {
+                $this->register($serviceId, $service);
+            }
+        }
     }
 
     public function register(string $serviceId, object $service): ServiceRegistryInterface
@@ -94,6 +103,6 @@ class ServiceRegistry implements ServiceRegistryInterface
 
     public function getServiceIds(): array
     {
-        return array_keys($this->services);
+        return array_map('strval', array_keys($this->services));
     }
 }

@@ -15,9 +15,11 @@ $ composer require siganushka/registry-contracts
 
 interface ChannelInterface
 {
-    public function method1(): string;
-    public function method2(): string;
-    public function method3(): string;
+    public function methodA(): string;
+    public function methodB(): string;
+    public function methodN(): string;
+
+    // ...
 }
 ```
 
@@ -40,28 +42,16 @@ class BarChannel implements ChannelInterface
 ```
 
 ```php
-// ./src/Channel/ChannelRegistry.php
+namespace Siganushka\Contracts\Registry\ServiceRegistry;
 
-use Siganushka\Contracts\Registry\AbstractRegistry;
+$registry = new ServiceRegistry(ChannelInterface::class);
+$registry->register('foo', new FooChannel());
+$registry->register('bar', new BarChannel());
 
-class ChannelRegistry extends AbstractRegistry
-{
-    public function __construct()
-    {
-        parent::__construct(ChannelInterface::class);
-    }
-}
-```
-
-```php
-$registry = new ChannelRegistry();
-$registry->register(new FooChannel());
-$registry->register(new BarChannel());
-
-$registry->get(FooChannel::class);  // return instanceof FooChannel
-$registry->has(BarChannel::class);  // return true
-$registry->getValues();             // return array of instanceof ChannelInterface
-$registry->getKeys();               // return ['App\Channel\FooChannel', 'App\Channel\BarChannel']
+$registry->get('foo');      // return instanceof FooChannel
+$registry->has('bar');      // return true
+$registry->all();           // return array of instanceof ChannelInterface
+$registry->getServiceIds(); // return ['foo', 'bar']
 ```
 
 Registry with alias.
@@ -83,30 +73,15 @@ class FooChannel implements ChannelInterface, AliasableInterface
 ```
 
 ```php
-// ./src/Channel/BarChannel.php
+namespace Siganushka\Contracts\Registry\ServiceRegistry;
 
-use Siganushka\Contracts\Registry\AliasableInterface;
+$registry = new ServiceRegistry(ChannelInterface::class);
+$registry->registerForAliasable(new FooChannel());
 
-class BarChannel implements ChannelInterface, AliasableInterface
-{
-    public function getAlias(): string
-    {
-        return 'bar';
-    }
-
-    // ...
-}
-```
-
-```php
-$registry = new ChannelRegistry();
-$registry->register(new FooChannel());
-$registry->register(new BarChannel());
-
-$registry->get('foo');  // return instanceof FooChannel
-$registry->has('bar');  // return true
-$registry->getValues(); // return array of instanceof ChannelInterface
-$registry->getKeys();   // return ['foo', 'bar']
+$registry->get('foo');      // return instanceof FooChannel
+$registry->has('foo');      // return true
+$registry->all();           // return array of instanceof ChannelInterface
+$registry->getServiceIds(); // return ['foo']
 ```
 
 ### Tests

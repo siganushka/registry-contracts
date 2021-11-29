@@ -21,7 +21,7 @@ use Siganushka\Contracts\Registry\Tests\Fixtures\TestInterface;
  */
 final class ServiceRegistryTest extends TestCase
 {
-    public function testRegister(): void
+    public function testAll(): void
     {
         $foo = new FooService();
         $bar = new BarService();
@@ -43,6 +43,23 @@ final class ServiceRegistryTest extends TestCase
         $registry->clear();
         static::assertSame([], $registry->all());
         static::assertSame([], $registry->getServiceIds());
+    }
+
+    public function testServiceIterator()
+    {
+        $serviceIterator = [
+            'foo' => new FooService(),
+            'bar222' => new BarService(),
+        ];
+
+        $registry = new ServiceRegistry(TestInterface::class, $serviceIterator);
+        static::assertSame(array_values($serviceIterator), array_values($registry->all()));
+        static::assertSame(['foo', 'bar'], $registry->getServiceIds());
+        static::assertTrue($registry->has('foo'));
+        static::assertTrue($registry->has('bar'));
+        static::assertFalse($registry->has('bar222'));
+        static::assertSame($serviceIterator['foo'], $registry->get('foo'));
+        static::assertSame($serviceIterator['bar222'], $registry->get('bar'));
     }
 
     public function testAbstractionNotFoundException(): void
