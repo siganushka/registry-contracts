@@ -10,6 +10,6 @@ class AbstractionNotFoundException extends ServiceRegistryException
 {
     public function __construct(ServiceRegistryInterface $registry, string $abstraction)
     {
-        parent::__construct($registry, sprintf('Abstraction %s for %s could not be found.', $abstraction, \get_class($registry)));
+        parent::__construct($registry, sprintf('Abstraction class "%s" for "%s" could not be found.', $abstraction, \get_class($registry)));
     }
 }

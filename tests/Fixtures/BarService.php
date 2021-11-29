@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Siganushka\Contracts\Registry\Tests\Fixtures;
 
-class BarService implements TestInterface
+use Siganushka\Contracts\Registry\AliasableInterface;
+
+class BarService implements TestInterface, AliasableInterface
 {
-    public static function getAlias(): string
+    public function getAlias(): string
     {
         return 'bar';
     }

@@ -10,6 +10,6 @@ class ServiceExistingException extends ServiceRegistryException
 {
     public function __construct(ServiceRegistryInterface $registry, string $serviceId)
     {
-        parent::__construct($registry, sprintf('Service %s for registry %s already exists.', $serviceId, \get_class($registry)));
+        parent::__construct($registry, sprintf('Service "%s" for "%s" already exists.', $serviceId, \get_class($registry)));
     }
 }

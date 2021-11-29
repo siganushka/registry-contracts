@@ -10,6 +10,6 @@ class ServiceUnsupportedException extends ServiceRegistryException
 {
     public function __construct(ServiceRegistryInterface $registry, string $serviceId)
     {
-        parent::__construct($registry, sprintf('Service %s for registry %s is unsupported.', $serviceId, \get_class($registry)));
+        parent::__construct($registry, sprintf('Service "%s" for "%s" is unsupported.', $serviceId, \get_class($registry)));
     }
 }

@@ -22,6 +22,14 @@ interface ServiceRegistryInterface
     public function register(string $serviceId, object $service): self;
 
     /**
+     * Register a service for aliasable interface.
+     *
+     * @throws ServiceUnsupportedException
+     * @throws ServiceExistingException
+     */
+    public function registerForAliasable(AliasableInterface $service): self;
+
+    /**
      * Unregister a service.
      *
      * @param string $serviceId Service ID
@@ -47,6 +55,11 @@ interface ServiceRegistryInterface
      * @throws ServiceNonExistingException
      */
     public function get(string $serviceId): object;
+
+    /**
+     * Gets all services.
+     */
+    public function all(): array;
 
     /**
      * Gets all service ids.

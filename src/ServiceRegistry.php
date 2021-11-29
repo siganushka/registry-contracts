@@ -9,7 +9,7 @@ use Siganushka\Contracts\Registry\Exception\ServiceExistingException;
 use Siganushka\Contracts\Registry\Exception\ServiceNonExistingException;
 use Siganushka\Contracts\Registry\Exception\ServiceUnsupportedException;
 
-abstract class AbstractServiceRegistry implements ServiceRegistryInterface
+class ServiceRegistry implements ServiceRegistryInterface
 {
     /**
      * Services for registry.
@@ -54,6 +54,11 @@ abstract class AbstractServiceRegistry implements ServiceRegistryInterface
         return $this;
     }
 
+    public function registerForAliasable(AliasableInterface $service): ServiceRegistryInterface
+    {
+        return $this->register($service->getAlias(), $service);
+    }
+
     public function unregister(string $serviceId): void
     {
         if (!$this->has($serviceId)) {
@@ -80,6 +85,11 @@ abstract class AbstractServiceRegistry implements ServiceRegistryInterface
     public function clear(): void
     {
         $this->services = [];
+    }
+
+    public function all(): array
+    {
+        return $this->services;
     }
 
     public function getServiceIds(): array
