@@ -12,6 +12,7 @@ use Siganushka\Contracts\Registry\Exception\ServiceUnsupportedException;
 use Siganushka\Contracts\Registry\ServiceRegistry;
 use Siganushka\Contracts\Registry\ServiceRegistryInterface;
 use Siganushka\Contracts\Registry\Tests\Fixtures\BarService;
+use Siganushka\Contracts\Registry\Tests\Fixtures\BazService;
 use Siganushka\Contracts\Registry\Tests\Fixtures\FooService;
 use Siganushka\Contracts\Registry\Tests\Fixtures\TestInterface;
 
@@ -25,41 +26,46 @@ final class ServiceRegistryTest extends TestCase
     {
         $foo = new FooService();
         $bar = new BarService();
+        $baz = new BazService();
 
         $registry = new ServiceRegistry(TestInterface::class);
-        static::assertInstanceOf(ServiceRegistryInterface::class, $registry->register('test', $foo));
-        static::assertInstanceOf(ServiceRegistryInterface::class, $registry->registerForAliasable($bar));
+        static::assertInstanceOf(ServiceRegistryInterface::class, $registry->register('foo', $foo));
+        static::assertInstanceOf(ServiceRegistryInterface::class, $registry->register('bar', $bar));
+        static::assertInstanceOf(ServiceRegistryInterface::class, $registry->register('baz', $baz));
 
-        static::assertSame(['test' => $foo, 'bar' => $bar], $registry->all());
-        static::assertSame(['test', 'bar'], $registry->getServiceIds());
-        static::assertTrue($registry->has('test'));
-        static::assertTrue($registry->has('bar'));
-        static::assertSame($foo, $registry->get('test'));
+        static::assertSame(['foo', 'bar', 'baz'], $registry->getServiceIds());
+        static::assertSame($foo, $registry->get('foo'));
         static::assertSame($bar, $registry->get('bar'));
+        static::assertSame($baz, $registry->get('baz'));
 
-        $registry->unregister('test');
-        static::assertSame(['bar'], $registry->getServiceIds());
+        $registry->unregister('bar');
+        static::assertSame(['foo', 'baz'], $registry->getServiceIds());
 
         $registry->clear();
         static::assertSame([], $registry->all());
         static::assertSame([], $registry->getServiceIds());
     }
 
-    public function testServiceIterator()
+    public function testServiceIterator(): void
     {
         $serviceIterator = [
-            'foo' => new FooService(),
-            'bar222' => new BarService(),
+            3 => new FooService(),
+            'bar' => new BarService(),
+            'baz111' => new BazService(),
         ];
 
         $registry = new ServiceRegistry(TestInterface::class, $serviceIterator);
-        static::assertSame(array_values($serviceIterator), array_values($registry->all()));
-        static::assertSame(['foo', 'bar'], $registry->getServiceIds());
-        static::assertTrue($registry->has('foo'));
-        static::assertTrue($registry->has('bar'));
-        static::assertFalse($registry->has('bar222'));
-        static::assertSame($serviceIterator['foo'], $registry->get('foo'));
-        static::assertSame($serviceIterator['bar222'], $registry->get('bar'));
+        static::assertSame([FooService::class, 'bar', 'baz'], $registry->getServiceIds());
+        static::assertSame($serviceIterator[3], $registry->get(FooService::class));
+        static::assertSame($serviceIterator['bar'], $registry->get('bar'));
+        static::assertSame($serviceIterator['baz111'], $registry->get('baz'));
+
+        $registry->unregister(FooService::class);
+        static::assertSame(['bar', 'baz'], $registry->getServiceIds());
+
+        $registry->clear();
+        static::assertSame([], $registry->all());
+        static::assertSame([], $registry->getServiceIds());
     }
 
     public function testAbstractionNotFoundException(): void

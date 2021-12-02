@@ -38,13 +38,17 @@ class ServiceRegistry implements ServiceRegistryInterface
 
         $this->abstraction = $abstraction;
 
-        // register for tagged iterator
+        // @see https://symfony.com/doc/current/service_container/tags.html#tagged-services-with-index
         foreach ($serviceIterator as $serviceId => $service) {
             if ($service instanceof AliasableInterface) {
-                $this->registerForAliasable($service);
-            } else {
-                $this->register($serviceId, $service);
+                $serviceId = $service->getAlias();
             }
+
+            if (!\is_string($serviceId)) {
+                $serviceId = \get_class($service);
+            }
+
+            $this->register($serviceId, $service);
         }
     }
 
@@ -61,11 +65,6 @@ class ServiceRegistry implements ServiceRegistryInterface
         $this->services[$serviceId] = $service;
 
         return $this;
-    }
-
-    public function registerForAliasable(AliasableInterface $service): ServiceRegistryInterface
-    {
-        return $this->register($service->getAlias(), $service);
     }
 
     public function unregister(string $serviceId): void
