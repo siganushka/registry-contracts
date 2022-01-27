@@ -32,7 +32,8 @@ class ServiceRegistry implements ServiceRegistryInterface
      */
     public function __construct(string $abstraction, iterable $serviceIterator = [])
     {
-        if (!interface_exists($abstraction)) {
+        if (false === interface_exists($abstraction) &&
+            false == class_exists($abstraction)) {
             throw new AbstractionNotFoundException($this, $abstraction);
         }
 

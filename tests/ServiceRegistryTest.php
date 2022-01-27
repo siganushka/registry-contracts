@@ -68,10 +68,15 @@ final class ServiceRegistryTest extends TestCase
         static::assertSame([], $registry->getServiceIds());
     }
 
+    public function testAbstractionNonInterface(): void
+    {
+        static::assertInstanceOf(ServiceRegistryInterface::class, new ServiceRegistry(\stdClass::class));
+    }
+
     public function testAbstractionNotFoundException(): void
     {
         $this->expectException(AbstractionNotFoundException::class);
-        $this->expectExceptionMessage(sprintf('Abstraction class "NotFoundInterface" for "%s" could not be found.', ServiceRegistry::class));
+        $this->expectExceptionMessage(sprintf('Abstraction interface (or class) "%s" for "%s" could not be found.', 'NotFoundInterface', ServiceRegistry::class));
 
         new ServiceRegistry('NotFoundInterface');
     }
