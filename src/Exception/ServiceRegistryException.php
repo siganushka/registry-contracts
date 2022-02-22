@@ -8,7 +8,7 @@ use Siganushka\Contracts\Registry\ServiceRegistryInterface;
 
 class ServiceRegistryException extends \RuntimeException
 {
-    protected $registry;
+    protected ServiceRegistryInterface $registry;
 
     public function __construct(ServiceRegistryInterface $registry, string $message, int $code = 0, \Throwable $previous = null)
     {

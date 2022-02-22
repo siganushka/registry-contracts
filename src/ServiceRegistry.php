@@ -14,9 +14,9 @@ class ServiceRegistry implements ServiceRegistryInterface
     /**
      * Services for registry.
      *
-     * @var array
+     * @var array<string, object>
      */
-    protected $services = [];
+    protected array $services = [];
 
     /**
      * Abstraction that services need to implement.
@@ -27,6 +27,8 @@ class ServiceRegistry implements ServiceRegistryInterface
 
     /**
      * Abstraction interface for construct.
+     *
+     * @param iterable<int|string, object> $serviceIterator
      *
      * @throws AbstractionNotFoundException
      */
@@ -53,7 +55,7 @@ class ServiceRegistry implements ServiceRegistryInterface
         }
     }
 
-    public function register(string $serviceId, object $service): ServiceRegistryInterface
+    public function register(string $serviceId, object $service): self
     {
         if (!$service instanceof $this->abstraction) {
             throw new ServiceUnsupportedException($this, $serviceId);
@@ -68,13 +70,15 @@ class ServiceRegistry implements ServiceRegistryInterface
         return $this;
     }
 
-    public function unregister(string $serviceId): void
+    public function unregister(string $serviceId): self
     {
         if (!$this->has($serviceId)) {
             throw new ServiceNonExistingException($this, $serviceId);
         }
 
         unset($this->services[$serviceId]);
+
+        return $this;
     }
 
     public function has(string $serviceId): bool

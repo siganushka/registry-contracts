@@ -27,10 +27,8 @@ interface ServiceRegistryInterface
      * @param string $serviceId Service ID
      *
      * @throws ServiceNonExistingException
-     *
-     * @return self
      */
-    public function unregister(string $serviceId): void;
+    public function unregister(string $serviceId): self;
 
     /**
      * Returns true if the given service is defined.
@@ -50,11 +48,15 @@ interface ServiceRegistryInterface
 
     /**
      * Gets all services.
+     *
+     * @return array<string, object>
      */
     public function all(): array;
 
     /**
      * Gets all service ids.
+     *
+     * @return array<string>
      */
     public function getServiceIds(): array;
 }
