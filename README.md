@@ -53,7 +53,7 @@ $registry->all();           // return array of instanceof ChannelInterface
 $registry->getServiceIds(); // return ['foo', 'bar']
 ```
 
-### using alias
+### Using alias
 
 ```php
 // ./src/Channel/FooChannel.php
@@ -78,7 +78,7 @@ $channels = [
     new FooChannel()
 ];
 
-// the second argument is type iterable of `$serviceIterator`
+// the second argument is type iterable of $services 
 $registry = new ServiceRegistry(ChannelInterface::class, $channels);
 
 $registry->get('foo');      // return instanceof FooChannel
@@ -87,9 +87,9 @@ $registry->all();           // return array of instanceof ChannelInterface
 $registry->getServiceIds(); // return ['foo']
 ```
 
-### symfony tagged services
+### Using symfony tagged services
 
-```
+```php
 // ./src/Channel/ChannelRegistry.php
 
 class ChannelRegistry extends ServiceRegistry
@@ -101,7 +101,7 @@ class ChannelRegistry extends ServiceRegistry
 }
 ```
 
-```
+```yaml
 // ./config/services.yaml
 
 services:
@@ -113,7 +113,7 @@ services:
         arguments: [ !tagged_iterator app.channel ]
 ```
 
-```
+```php
 // ./src/Controller/BazController.php
 
 class BazController extends AbstractController
