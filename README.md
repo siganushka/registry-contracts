@@ -16,9 +16,8 @@ $ composer require siganushka/registry-contracts:dev-main
 interface ChannelInterface
 {
     public function methodA(): string;
-    public function methodB(): string;
-    public function methodN(): string;
-
+    public function methodB(): int;
+ 
     // ...
 }
 ```
@@ -42,7 +41,7 @@ class BarChannel implements ChannelInterface
 ```
 
 ```php
-namespace Siganushka\Contracts\Registry\ServiceRegistry;
+use Siganushka\Contracts\Registry\ServiceRegistry;
 
 $registry = new ServiceRegistry(ChannelInterface::class);
 $registry->register('foo', new FooChannel());
@@ -54,7 +53,7 @@ $registry->all();           // return array of instanceof ChannelInterface
 $registry->getServiceIds(); // return ['foo', 'bar']
 ```
 
-Registry with alias.
+### using alias
 
 ```php
 // ./src/Channel/FooChannel.php
@@ -73,16 +72,62 @@ class FooChannel implements ChannelInterface, AliasableInterface
 ```
 
 ```php
-namespace Siganushka\Contracts\Registry\ServiceRegistry;
+use Siganushka\Contracts\Registry\ServiceRegistry;
 
-$registry = new ServiceRegistry(ChannelInterface::class);
-$registry->registerForAliasable(new FooChannel());
+$channels = [
+    new FooChannel()
+];
+
+// the second argument is type iterable of `$serviceIterator`
+$registry = new ServiceRegistry(ChannelInterface::class, $channels);
 
 $registry->get('foo');      // return instanceof FooChannel
 $registry->has('foo');      // return true
 $registry->all();           // return array of instanceof ChannelInterface
 $registry->getServiceIds(); // return ['foo']
 ```
+
+### symfony tagged services
+
+```
+// ./src/Channel/ChannelRegistry.php
+
+class ChannelRegistry extends ServiceRegistry
+{
+    public function __construct(iterable $channels)
+    {
+        parent::__construct(ChannelInterface::class, $channels);
+    }
+}
+```
+
+```
+// ./config/services.yaml
+
+services:
+    _instanceof:
+        App\Channel\ChannelInterface
+            tags: [ app.channel ]
+
+    App\Channel\ChannelRegistry:
+        arguments: [ !tagged_iterator app.channel ]
+```
+
+```
+// ./src/Controller/BazController.php
+
+class BazController extends AbstractController
+{
+    public function index(ChannelRegistry $registry)
+    {
+        $foo = $registry->get(FooChannel::class);
+        // or $registry->get('foo') if using alias
+        // $foo is instanceof FooChannel
+    }
+}
+```
+
+More details: https://symfony.com/doc/current/service_container/tags.html#reference-tagged-services
 
 ### Tests
 
