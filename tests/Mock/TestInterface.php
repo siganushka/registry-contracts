@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Siganushka\Contracts\Registry\Tests\Fixtures;
+namespace Siganushka\Contracts\Registry\Tests\Mock;
 
 interface TestInterface
 {

@@ -11,15 +11,11 @@ use Siganushka\Contracts\Registry\Exception\ServiceNonExistingException;
 use Siganushka\Contracts\Registry\Exception\ServiceUnsupportedException;
 use Siganushka\Contracts\Registry\ServiceRegistry;
 use Siganushka\Contracts\Registry\ServiceRegistryInterface;
-use Siganushka\Contracts\Registry\Tests\Fixtures\BarService;
-use Siganushka\Contracts\Registry\Tests\Fixtures\BazService;
-use Siganushka\Contracts\Registry\Tests\Fixtures\FooService;
-use Siganushka\Contracts\Registry\Tests\Fixtures\TestInterface;
+use Siganushka\Contracts\Registry\Tests\Mock\BarService;
+use Siganushka\Contracts\Registry\Tests\Mock\BazService;
+use Siganushka\Contracts\Registry\Tests\Mock\FooService;
+use Siganushka\Contracts\Registry\Tests\Mock\TestInterface;
 
-/**
- * @internal
- * @coversNothing
- */
 final class ServiceRegistryTest extends TestCase
 {
     public function testAll(): void
