@@ -5,7 +5,7 @@ A set of abstractions for registry pattern.
 ### Installation
 
 ```bash
-$ composer require siganushka/registry-contracts:dev-main
+$ composer require siganushka/registry-contracts
 ```
 
 ### Usage
