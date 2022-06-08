@@ -16,14 +16,12 @@ class ServiceRegistry implements ServiceRegistryInterface
      *
      * @var array<string, object>
      */
-    protected array $services = [];
+    private array $services = [];
 
     /**
      * Abstraction that services need to implement.
-     *
-     * @var string
      */
-    private $abstraction;
+    private string $abstraction;
 
     /**
      * Abstraction interface for construct.
