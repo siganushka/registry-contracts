@@ -6,4 +6,5 @@ namespace Siganushka\Contracts\Registry\Tests\Mock;
 
 interface TestInterface
 {
+    public function testMethodCalledGetClassName(): string;
 }

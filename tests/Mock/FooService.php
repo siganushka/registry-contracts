@@ -6,4 +6,8 @@ namespace Siganushka\Contracts\Registry\Tests\Mock;
 
 class FooService implements TestInterface
 {
+    public function testMethodCalledGetClassName(): string
+    {
+        return static::class;
+    }
 }

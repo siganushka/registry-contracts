@@ -9,19 +9,22 @@ use Siganushka\Contracts\Registry\Exception\ServiceExistingException;
 use Siganushka\Contracts\Registry\Exception\ServiceNonExistingException;
 use Siganushka\Contracts\Registry\Exception\ServiceUnsupportedException;
 
+/**
+ * @see https://symfony.com/doc/current/service_container/tags.html#tagged-services-with-index
+ */
 class ServiceRegistry implements ServiceRegistryInterface
 {
+    /**
+     * Abstraction that services need to implement.
+     */
+    private string $abstraction;
+
     /**
      * Services for registry.
      *
      * @var array<string, object>
      */
     private array $services = [];
-
-    /**
-     * Abstraction that services need to implement.
-     */
-    private string $abstraction;
 
     /**
      * Abstraction interface for construct.
@@ -32,14 +35,12 @@ class ServiceRegistry implements ServiceRegistryInterface
      */
     public function __construct(string $abstraction, iterable $serviceIterator = [])
     {
-        if (false === interface_exists($abstraction) &&
-            false === class_exists($abstraction)) {
+        if (false === interface_exists($abstraction) && false === class_exists($abstraction)) {
             throw new AbstractionNotFoundException($this, $abstraction);
         }
 
         $this->abstraction = $abstraction;
 
-        // @see https://symfony.com/doc/current/service_container/tags.html#tagged-services-with-index
         foreach ($serviceIterator as $serviceId => $service) {
             if ($service instanceof AliasableInterface) {
                 $serviceId = $service->getAlias();
