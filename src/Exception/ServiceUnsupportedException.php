@@ -8,8 +8,8 @@ use Siganushka\Contracts\Registry\ServiceRegistryInterface;
 
 class ServiceUnsupportedException extends ServiceRegistryException
 {
-    public function __construct(ServiceRegistryInterface $registry, string $serviceId)
+    public function __construct(ServiceRegistryInterface $registry, string $id)
     {
-        parent::__construct($registry, sprintf('Service "%s" for "%s" is unsupported.', $serviceId, \get_class($registry)));
+        parent::__construct($registry, sprintf('Service "%s" for "%s" is unsupported.', $id, \get_class($registry)));
     }
 }

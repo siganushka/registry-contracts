@@ -13,38 +13,38 @@ interface ServiceRegistryInterface
     /**
      * Register a service.
      *
-     * @param string $serviceId Service ID
-     * @param object $service   Service Object
+     * @param string $id      Service ID
+     * @param object $service Service Object
      *
      * @throws ServiceUnsupportedException
      * @throws ServiceExistingException
      */
-    public function register(string $serviceId, object $service): self;
+    public function register(string $id, object $service): self;
 
     /**
      * Unregister a service.
      *
-     * @param string $serviceId Service ID
+     * @param string $id Service ID
      *
      * @throws ServiceNonExistingException
      */
-    public function unregister(string $serviceId): self;
+    public function unregister(string $id): self;
 
     /**
      * Returns true if the given service is defined.
      *
-     * @param string $serviceId Service ID
+     * @param string $id Service ID
      */
-    public function has(string $serviceId): bool;
+    public function has(string $id): bool;
 
     /**
      * Gets a service.
      *
-     * @param string $serviceId Service ID
+     * @param string $id Service ID
      *
      * @throws ServiceNonExistingException
      */
-    public function get(string $serviceId): object;
+    public function get(string $id): object;
 
     /**
      * Gets all services.

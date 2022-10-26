@@ -8,8 +8,8 @@ use Siganushka\Contracts\Registry\ServiceRegistryInterface;
 
 class ServiceExistingException extends ServiceRegistryException
 {
-    public function __construct(ServiceRegistryInterface $registry, string $serviceId)
+    public function __construct(ServiceRegistryInterface $registry, string $id)
     {
-        parent::__construct($registry, sprintf('Service "%s" for "%s" already exists.', $serviceId, \get_class($registry)));
+        parent::__construct($registry, sprintf('Service "%s" for "%s" already exists.', $id, \get_class($registry)));
     }
 }

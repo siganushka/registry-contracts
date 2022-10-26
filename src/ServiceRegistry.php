@@ -41,57 +41,57 @@ class ServiceRegistry implements ServiceRegistryInterface
 
         $this->abstraction = $abstraction;
 
-        foreach ($serviceIterator as $serviceId => $service) {
+        foreach ($serviceIterator as $id => $service) {
             if ($service instanceof AliasableInterface) {
-                $serviceId = $service->getAlias();
+                $id = $service->getAlias();
             }
 
-            if (!\is_string($serviceId)) {
-                $serviceId = \get_class($service);
+            if (!\is_string($id)) {
+                $id = \get_class($service);
             }
 
-            $this->register($serviceId, $service);
+            $this->register($id, $service);
         }
     }
 
-    public function register(string $serviceId, object $service): self
+    public function register(string $id, object $service): self
     {
         if (!$service instanceof $this->abstraction) {
-            throw new ServiceUnsupportedException($this, $serviceId);
+            throw new ServiceUnsupportedException($this, $id);
         }
 
-        if ($this->has($serviceId)) {
-            throw new ServiceExistingException($this, $serviceId);
+        if ($this->has($id)) {
+            throw new ServiceExistingException($this, $id);
         }
 
-        $this->services[$serviceId] = $service;
+        $this->services[$id] = $service;
 
         return $this;
     }
 
-    public function unregister(string $serviceId): self
+    public function unregister(string $id): self
     {
-        if (!$this->has($serviceId)) {
-            throw new ServiceNonExistingException($this, $serviceId);
+        if (!$this->has($id)) {
+            throw new ServiceNonExistingException($this, $id);
         }
 
-        unset($this->services[$serviceId]);
+        unset($this->services[$id]);
 
         return $this;
     }
 
-    public function has(string $serviceId): bool
+    public function has(string $id): bool
     {
-        return \array_key_exists($serviceId, $this->services);
+        return \array_key_exists($id, $this->services);
     }
 
-    public function get(string $serviceId): object
+    public function get(string $id): object
     {
-        if (!$this->has($serviceId)) {
-            throw new ServiceNonExistingException($this, $serviceId);
+        if (!$this->has($id)) {
+            throw new ServiceNonExistingException($this, $id);
         }
 
-        return $this->services[$serviceId];
+        return $this->services[$id];
     }
 
     public function clear(): void
