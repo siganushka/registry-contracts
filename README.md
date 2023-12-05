@@ -20,18 +20,14 @@ interface ChannelInterface
  
     // ...
 }
-```
 
-```php
 // ./src/Channel/FooChannel.php
 
 class FooChannel implements ChannelInterface
 {
     // ...
 }
-```
 
-```php
 // ./src/Channel/BarChannel.php
 
 class BarChannel implements ChannelInterface
@@ -58,6 +54,7 @@ $registry->getServiceIds(); // return ['foo', 'bar']
 ```php
 // ./src/Channel/FooChannel.php
 
+use Siganushka\Contracts\Registry\ServiceRegistry;
 use Siganushka\Contracts\Registry\AliasableInterface;
 
 class FooChannel implements ChannelInterface, AliasableInterface
@@ -69,10 +66,6 @@ class FooChannel implements ChannelInterface, AliasableInterface
 
     // ...
 }
-```
-
-```php
-use Siganushka\Contracts\Registry\ServiceRegistry;
 
 $channels = [
     new FooChannel()
@@ -106,7 +99,7 @@ class ChannelRegistry extends ServiceRegistry
 
 services:
     _instanceof:
-        App\Channel\ChannelInterface
+        App\Channel\ChannelInterface:
             tags: [ app.channel ]
 
     App\Channel\ChannelRegistry:
